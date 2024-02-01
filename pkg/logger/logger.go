@@ -2,6 +2,7 @@ package logger
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/spf13/viper"
 	"io"
 	"log"
 	"os"
@@ -84,6 +85,9 @@ func InfoLog(s ...string) {
 }
 
 func DebugLog(s ...string) {
+	if viper.GetString("bd_mode") != "debug" {
+		return
+	}
 	msg := " "
 	for _, v := range s {
 		msg += v + " "

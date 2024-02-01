@@ -11,9 +11,11 @@ import (
 )
 
 var Client *mongo.Client
+var DB *mongo.Database
 
 func ConnectMongo() {
 	uri := conf.GetConf("MONGO_URI")
+	logger.DebugLog("MONGO_URI: " + uri)
 	if uri == "" {
 		logger.FatalLog("MONGO_URI not found.")
 	}
@@ -33,4 +35,5 @@ func ConnectMongo() {
 	if err != nil {
 		logger.FatalLog(err.Error())
 	}
+	DB = Client.Database("bd")
 }

@@ -1,11 +1,12 @@
 package service
 
 import (
+	"main/model"
 	"main/pkg/logger"
 )
 
 func init() {
-	// model.ConnectMongo()
+	model.ConnectMongo()
 }
 
 func Ping() {

@@ -9,11 +9,11 @@ import (
 var key = []byte("Better_Dorm_@CCNU")
 
 type Myclaims struct {
-	UID int
+	UID string
 	jwt.StandardClaims
 }
 
-func Newtoken(UID int) (string, error) {
+func Newtoken(UID string) (string, error) {
 	return jwt.NewWithClaims(jwt.SigningMethodHS256, Myclaims{
 		UID,
 		jwt.StandardClaims{
