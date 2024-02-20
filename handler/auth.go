@@ -7,7 +7,7 @@ import (
 )
 
 type LoginRequest struct {
-	Uid    string `json:"uid"`
+	CCNUid string `json:"ccnuid" bson:"ccnuid"`
 	Passwd string `json:"passwd"`
 }
 
@@ -18,7 +18,7 @@ func Login(ctx *gin.Context) {
 		ResponseError(ctx, 400, "Bad Request")
 		return
 	}
-	token, err := auth.Login(&model.User{Uid: req.Uid, Passwd: req.Passwd})
+	token, err := auth.Login(ctx.Request.Context(), &model.User{CCNUid: req.CCNUid, Passwd: req.Passwd})
 	if err != nil {
 		ResponseError(ctx, 400, err.Error())
 		return
@@ -27,7 +27,7 @@ func Login(ctx *gin.Context) {
 }
 
 type RegisterRequest struct {
-	Uid    string `json:"uid"`
+	CCNUid string `json:"ccnuid" bson:"ccnuid"`
 	Name   string `json:"name"`
 	Passwd string `json:"passwd"`
 }
@@ -39,7 +39,7 @@ func Register(ctx *gin.Context) {
 		ResponseError(ctx, 400, "Bad Request")
 		return
 	}
-	err = auth.Register(&model.User{Uid: req.Uid, Name: req.Name, Passwd: req.Passwd})
+	err = auth.Register(ctx.Request.Context(), &model.User{CCNUid: req.CCNUid, Name: req.Name, Passwd: req.Passwd})
 	if err != nil {
 		ResponseError(ctx, 400, err.Error())
 		return

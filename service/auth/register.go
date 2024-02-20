@@ -5,6 +5,6 @@ import (
 	"main/model"
 )
 
-func Register(info *model.User) error {
-	return model.Insert(context.TODO(), info)
+func Register(ctx context.Context, info *model.User) error {
+	return model.Insert(ctx, info)
 }

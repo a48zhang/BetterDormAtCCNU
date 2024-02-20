@@ -16,11 +16,13 @@ func Register(e *gin.Engine) *gin.Engine {
 
 	// Group test: for developing use, will be removed in the future.
 	test := e.Group("/test")
-	test.POST("register", handler.Register)
-	test.GET("/ping", func(ctx *gin.Context) {
-		ctx.JSON(200, gin.H{
-			"message": "pong"})
-	})
+	{
+		test.POST("register", handler.Register)
+		test.GET("/ping", func(ctx *gin.Context) {
+			ctx.JSON(200, gin.H{
+				"message": "pong"})
+		})
+	}
 
 	v1 := e.Group("/api/v1")
 	{
@@ -28,7 +30,13 @@ func Register(e *gin.Engine) *gin.Engine {
 		v1.Use(middleware.TokenParser)
 		users := v1.Group("/users")
 		users.GET("/", handler.GetUserInfo)
+		users.POST("/", handler.UpdateUserInfo)
 
+		forms := v1.Group("/forms")
+		forms.GET("/my", handler.GetForms)
+		forms.POST("/create", handler.CreateForm)
+		forms.GET("/", handler.GetOneForm)
+		forms.POST("/check", handler.CheckForm)
 	}
 
 	return e

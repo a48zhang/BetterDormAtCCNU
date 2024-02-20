@@ -2,12 +2,14 @@ package model
 
 import (
 	"context"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type structs interface {
-	User
+	User | Form
 	Col() *mongo.Collection
+	ID() (string, string)
 }
 
 func GetOne[T structs](ctx context.Context, info *T) error {
@@ -38,5 +40,8 @@ func Delete[T structs](ctx context.Context, info *T) error {
 }
 
 func Update[T structs](ctx context.Context, info *T) error {
-	// TODO
+	name, id := (*info).ID()
+	filt := bson.D{{name, id}}
+	_, err := (*info).Col().UpdateOne(ctx, filt, *info)
+	return err
 }

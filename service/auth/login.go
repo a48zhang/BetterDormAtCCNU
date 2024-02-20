@@ -7,11 +7,11 @@ import (
 	"main/pkg/token"
 )
 
-func Login(LoginInfo *model.User) (string, error) {
-	loginID := LoginInfo.Uid
+func Login(ctx context.Context, LoginInfo *model.User) (string, error) {
+	loginID := LoginInfo.CCNUid
 	loginPwd := LoginInfo.Passwd
-	dbinfo := model.User{Uid: loginID}
-	err := model.GetOne(context.TODO(), &dbinfo)
+	dbinfo := model.User{CCNUid: loginID}
+	err := model.GetOne(ctx, &dbinfo)
 	if err != nil {
 		return "", err
 	}
