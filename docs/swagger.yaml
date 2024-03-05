@@ -1,0 +1,310 @@
+basePath: /api/v1
+definitions:
+  handler.CheckFormRequest:
+    properties:
+      fid:
+        type: string
+      opt:
+        type: integer
+    type: object
+  handler.FormRequest:
+    properties:
+      college:
+        type: string
+      contact:
+        type: string
+      context:
+        type: string
+      from_dorm:
+        type: string
+      student_id:
+        type: string
+      teacher_id:
+        type: string
+      to_bed:
+        type: string
+      to_dorm:
+        type: string
+    type: object
+  handler.LoginRequest:
+    properties:
+      ccnuid:
+        type: string
+      passwd:
+        type: string
+    type: object
+  handler.RegisterRequest:
+    properties:
+      ccnuid:
+        type: string
+      name:
+        type: string
+      passwd:
+        type: string
+    type: object
+  handler.Resp:
+    properties:
+      code:
+        type: integer
+      data: {}
+      msg:
+        type: string
+    type: object
+  model.User:
+    properties:
+      ccnuid:
+        type: string
+      name:
+        type: string
+      passwd:
+        type: string
+      role:
+        description: 'role: 0 for student, 1 for teacher, 2 for school'
+        type: integer
+      uid:
+        type: string
+      valid:
+        type: integer
+    type: object
+info:
+  contact:
+    email: 3557695455@qq.com 1034028483@qq.com
+    name: '@a48zhang & @LogSingleDog'
+  description: Backend system of Dorm-changing mini program, CCNU
+  title: Dorm-changing Backend API
+  version: "0.1"
+paths:
+  /forms:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: fid
+        in: query
+        name: fid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: 获取单个换宿申请表格
+      tags:
+      - form
+  /forms/check:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 审核信息
+        in: body
+        name: CheckForm
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CheckFormRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: 审核换宿申请表格
+      tags:
+      - form
+  /forms/create:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 换宿申请表格
+        in: body
+        name: Form
+        required: true
+        schema:
+          $ref: '#/definitions/handler.FormRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: 提交新换宿申请表格
+      tags:
+      - form
+  /forms/my:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: 获取用户的换宿申请表格
+      tags:
+      - form
+  /login:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 登录信息
+        in: body
+        name: Login
+        required: true
+        schema:
+          $ref: '#/definitions/handler.LoginRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: 登录
+      tags:
+      - auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 注册信息
+        in: body
+        name: Register
+        required: true
+        schema:
+          $ref: '#/definitions/handler.RegisterRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: 注册
+      tags:
+      - auth
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Get user info
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: Get user info
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      description: Update user info
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: info
+        in: body
+        name: info
+        required: true
+        schema:
+          $ref: '#/definitions/model.User'
+      - description: uid
+        in: path
+        name: uid
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: Update user info
+      tags:
+      - user
+schemes:
+- http
+swagger: "2.0"

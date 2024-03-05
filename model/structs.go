@@ -22,10 +22,13 @@ func (u User) ID() (string, string) {
 type Form struct {
 	Fid       string `json:"fid" bson:"fid"`
 	StudentID string `json:"student_id" bson:"student_id"`
+	College   string `json:"college" bson:"college"`
+	Contact   string `json:"contact" bson:"contact"`
 	TeacherID string `json:"teacher_id" bson:"teacher_id"`
 	CreateAt  string `json:"create_at" bson:"create_at"`
 	FromDorm  string `json:"from_dorm" bson:"from_dorm"`
 	ToDorm    string `json:"to_dorm" bson:"to_dorm"`
+	ToBed     string `json:"to_bed" bson:"to_bed"`
 	Context   string `json:"context" bson:"context"`
 	Status    int    `json:"status" bson:"status"`
 }

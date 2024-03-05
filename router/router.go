@@ -2,6 +2,9 @@ package router
 
 import (
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
+	_ "main/docs"
 	"main/handler"
 	"main/router/middleware"
 )
@@ -14,15 +17,14 @@ func Register(e *gin.Engine) *gin.Engine {
 		})
 	})
 
-	// Group test: for developing use, will be removed in the future.
-	test := e.Group("/test")
-	{
-		test.POST("register", handler.Register)
-		test.GET("/ping", func(ctx *gin.Context) {
-			ctx.JSON(200, gin.H{
-				"message": "pong"})
-		})
-	}
+	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
+
+	e.GET("/ping", func(ctx *gin.Context) {
+		ctx.JSON(200, gin.H{
+			"message": "pong"})
+	})
+
+	e.POST("register", handler.Register)
 
 	v1 := e.Group("/api/v1")
 	{

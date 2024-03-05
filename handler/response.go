@@ -2,6 +2,12 @@ package handler
 
 import "github.com/gin-gonic/gin"
 
+type Resp struct {
+	Code int         `json:"code"`
+	Data interface{} `json:"data"`
+	Msg  string      `json:"msg"`
+}
+
 func Response(ctx *gin.Context, code int, data interface{}, msg string) {
 	ctx.JSON(code, gin.H{
 		"code": code,

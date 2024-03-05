@@ -11,6 +11,16 @@ type LoginRequest struct {
 	Passwd string `json:"passwd"`
 }
 
+// Login godoc
+//
+// @Summary 登录
+// @Tags auth
+// @Accept	json
+// @Produce json
+// @Param Login body LoginRequest true "登录信息"
+// @Success	200	{object} Resp
+// @Failure	400	{object} Resp
+// @Router  /login [post]
 func Login(ctx *gin.Context) {
 	req := LoginRequest{}
 	err := ctx.ShouldBindJSON(&req)
@@ -32,6 +42,16 @@ type RegisterRequest struct {
 	Passwd string `json:"passwd"`
 }
 
+// Register godoc
+//
+// @Summary 注册
+// @Tags auth
+// @Accept	json
+// @Produce json
+// @Param Register body RegisterRequest true "注册信息"
+// @Success	200	{object} Resp
+// @Failure	400	{object} Resp
+// @Router  /register [post]
 func Register(ctx *gin.Context) {
 	req := RegisterRequest{}
 	err := ctx.ShouldBindJSON(&req)
