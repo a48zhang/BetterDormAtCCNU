@@ -89,8 +89,7 @@ func GetForms(ctx *gin.Context) {
 // @Router  /forms [get]
 func GetOneForm(ctx *gin.Context) {
 	fid := ctx.Query("fid")
-	data := model.Form{Fid: fid}
-	err := model.GetOne(ctx.Request.Context(), &data)
+	data, err := form.GetOneForm(ctx.Request.Context(), fid)
 	if err != nil {
 		ResponseError(ctx, 500, err.Error())
 		return

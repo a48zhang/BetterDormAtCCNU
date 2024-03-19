@@ -8,7 +8,8 @@ import (
 
 type LoginRequest struct {
 	CCNUid string `json:"ccnuid" bson:"ccnuid"`
-	Passwd string `json:"passwd"`
+	Name   string `json:"name" bson:"name"`
+	Passwd string `json:"passwd" bson:"passwd"`
 }
 
 // Login godoc
@@ -17,7 +18,7 @@ type LoginRequest struct {
 // @Tags auth
 // @Accept	json
 // @Produce json
-// @Param Login body LoginRequest true "登录信息"
+// @Param Login body LoginRequest true "登录信息，只需要填写Name和Passwd"
 // @Success	200	{object} Resp
 // @Failure	400	{object} Resp
 // @Router  /login [post]
@@ -28,7 +29,7 @@ func Login(ctx *gin.Context) {
 		ResponseError(ctx, 400, "Bad Request")
 		return
 	}
-	token, err := auth.Login(ctx.Request.Context(), &model.User{CCNUid: req.CCNUid, Passwd: req.Passwd})
+	token, err := auth.Login(ctx.Request.Context(), &model.User{Name: req.Name, Passwd: req.Passwd})
 	if err != nil {
 		ResponseError(ctx, 400, err.Error())
 		return
@@ -38,8 +39,8 @@ func Login(ctx *gin.Context) {
 
 type RegisterRequest struct {
 	CCNUid string `json:"ccnuid" bson:"ccnuid"`
-	Name   string `json:"name"`
-	Passwd string `json:"passwd"`
+	Name   string `json:"name" bson:"name"`
+	Passwd string `json:"passwd" bson:"passwd"`
 }
 
 // Register godoc
@@ -64,5 +65,5 @@ func Register(ctx *gin.Context) {
 		ResponseError(ctx, 400, err.Error())
 		return
 	}
-	ResponseOK(ctx, gin.H{"warning": "this api will be deprecated in the future."})
+	ResponseOK(ctx, nil)
 }

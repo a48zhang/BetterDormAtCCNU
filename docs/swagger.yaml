@@ -30,6 +30,8 @@ definitions:
     properties:
       ccnuid:
         type: string
+      name:
+        type: string
       passwd:
         type: string
     type: object
@@ -53,6 +55,8 @@ definitions:
   model.User:
     properties:
       ccnuid:
+        type: string
+      id:
         type: string
       name:
         type: string
@@ -200,7 +204,7 @@ paths:
       consumes:
       - application/json
       parameters:
-      - description: 登录信息
+      - description: 登录信息，只需要填写Name和Passwd
         in: body
         name: Login
         required: true

@@ -218,7 +218,7 @@ const docTemplate = `{
                 "summary": "登录",
                 "parameters": [
                     {
-                        "description": "登录信息",
+                        "description": "登录信息，只需要填写Name和Passwd",
                         "name": "Login",
                         "in": "body",
                         "required": true,
@@ -420,6 +420,9 @@ const docTemplate = `{
                 "ccnuid": {
                     "type": "string"
                 },
+                "name": {
+                    "type": "string"
+                },
                 "passwd": {
                     "type": "string"
                 }
@@ -455,6 +458,9 @@ const docTemplate = `{
             "type": "object",
             "properties": {
                 "ccnuid": {
+                    "type": "string"
+                },
+                "id": {
                     "type": "string"
                 },
                 "name": {

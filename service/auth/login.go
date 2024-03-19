@@ -8,16 +8,16 @@ import (
 )
 
 func Login(ctx context.Context, LoginInfo *model.User) (string, error) {
-	loginID := LoginInfo.CCNUid
+	loginName := LoginInfo.Name
 	loginPwd := LoginInfo.Passwd
-	dbinfo := model.User{CCNUid: loginID}
-	err := model.GetOne(ctx, &dbinfo)
+	dbinfo := model.User{Name: loginName}
+	err := dbinfo.FindByName(ctx)
 	if err != nil {
 		return "", err
 	}
 	if dbinfo.Passwd != loginPwd {
 		return "", errors.New("wrong username or password")
 	} else {
-		return token.Newtoken(loginID)
+		return token.Newtoken(dbinfo.CCNUid)
 	}
 }

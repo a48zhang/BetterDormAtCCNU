@@ -6,5 +6,5 @@ import (
 )
 
 func Register(ctx context.Context, info *model.User) error {
-	return model.Insert(ctx, info)
+	return info.Insert(ctx)
 }

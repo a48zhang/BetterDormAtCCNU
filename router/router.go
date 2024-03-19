@@ -24,10 +24,9 @@ func Register(e *gin.Engine) *gin.Engine {
 			"message": "pong"})
 	})
 
-	e.POST("register", handler.Register)
-
 	v1 := e.Group("/api/v1")
 	{
+		v1.POST("register", handler.Register)
 		v1.POST("/login", handler.Login)
 		v1.Use(middleware.TokenParser)
 		users := v1.Group("/users")

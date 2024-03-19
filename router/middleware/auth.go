@@ -9,7 +9,7 @@ import (
 )
 
 func TokenParser(r *gin.Context) {
-	tokenString := r.GetHeader("Authorization")
+	tokenString := r.GetHeader("token")
 	if tokenString == "" {
 		r.AbortWithError(http.StatusForbidden, errors.New("token not found"))
 		return
@@ -21,8 +21,8 @@ func TokenParser(r *gin.Context) {
 	}
 	r.Set("uid", claims.UID)
 	r.Set("expiresAt", claims.ExpiresAt)
-	info := model.User{CCNUid: claims.UID}
-	err = model.GetOne(r.Request.Context(), &info)
+	info := &model.User{CCNUid: claims.UID}
+	err = info.FindByCCNUid(r)
 	if err != nil {
 		r.AbortWithError(http.StatusForbidden, errors.New("user not valid"))
 	}

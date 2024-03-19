@@ -3,20 +3,28 @@ package model
 import (
 	"context"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type structs interface {
-	User | Form
+type Elem interface {
 	Col() *mongo.Collection
-	ID() (string, string)
+	ID() primitive.ObjectID
 }
 
-func GetOne[T structs](ctx context.Context, info *T) error {
+type Crud interface {
+	Insert(context.Context) error
+	Update(context.Context) error
+	Delete(context.Context) error
+	Find(context.Context) error
+	FindAll(context.Context) ([]any, error)
+}
+
+func find[T Elem](ctx context.Context, info *T) error {
 	return (*info).Col().FindOne(ctx, *info).Decode(&info)
 }
 
-func GetMany[T structs](ctx context.Context, info *T) ([]T, error) {
+func findAll[T Elem](ctx context.Context, info *T) ([]T, error) {
 	cursor, err := (*info).Col().Find(ctx, *info)
 	if err != nil {
 		return nil, err
@@ -29,19 +37,33 @@ func GetMany[T structs](ctx context.Context, info *T) ([]T, error) {
 	return result, nil
 }
 
-func Insert[T structs](ctx context.Context, info *T) error {
+func insert[T Elem](ctx context.Context, info *T) error {
 	_, err := (*info).Col().InsertOne(ctx, *info)
 	return err
 }
 
-func Delete[T structs](ctx context.Context, info *T) error {
+func delete[T Elem](ctx context.Context, info *T) error {
 	_, err := (*info).Col().DeleteOne(ctx, *info)
 	return err
 }
 
-func Update[T structs](ctx context.Context, info *T) error {
-	name, id := (*info).ID()
-	filt := bson.D{{name, id}}
-	_, err := (*info).Col().UpdateOne(ctx, filt, *info)
+func update[T Elem](ctx context.Context, info *T) error {
+	_, err := (*info).Col().UpdateOne(ctx, bson.D{{"_id", (*info).ID()}}, *info)
 	return err
+}
+
+func Insert[T Elem](ctx context.Context, info *T) error {
+	return insert(ctx, info)
+}
+func Update[T Elem](ctx context.Context, info *T) error {
+	return update(ctx, info)
+}
+func Delete[T Elem](ctx context.Context, info *T) error {
+	return delete(ctx, info)
+}
+func Find[T Elem](ctx context.Context, info *T) error {
+	return find(ctx, info)
+}
+func FindAll[T Elem](ctx context.Context, info *T) ([]T, error) {
+	return findAll(ctx, info)
 }
