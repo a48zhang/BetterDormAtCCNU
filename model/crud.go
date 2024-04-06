@@ -48,7 +48,7 @@ func delete[T Elem](ctx context.Context, info *T) error {
 }
 
 func update[T Elem](ctx context.Context, info *T) error {
-	_, err := (*info).Col().UpdateOne(ctx, bson.D{{"_id", (*info).ID()}}, *info)
+	_, err := (*info).Col().ReplaceOne(ctx, bson.D{{"_id", (*info).ID()}}, *info)
 	return err
 }
 

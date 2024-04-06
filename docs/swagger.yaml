@@ -2,6 +2,8 @@ basePath: /api/v1
 definitions:
   handler.CheckFormRequest:
     properties:
+      advice:
+        type: string
       fid:
         type: string
       opt:
@@ -44,6 +46,13 @@ definitions:
       passwd:
         type: string
     type: object
+  handler.ReportRequest:
+    properties:
+      contact:
+        type: string
+      info:
+        type: string
+    type: object
   handler.Resp:
     properties:
       code:
@@ -65,6 +74,10 @@ definitions:
       role:
         description: 'role: 0 for student, 1 for teacher, 2 for school'
         type: integer
+      school:
+        type: string
+      stage:
+        type: string
       uid:
         type: string
       valid:
@@ -249,6 +262,61 @@ paths:
       summary: 注册
       tags:
       - auth
+  /report:
+    get:
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: 我的反馈
+      tags:
+      - user
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      - description: 反馈信息
+        in: body
+        name: Report
+        required: true
+        schema:
+          $ref: '#/definitions/handler.ReportRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: 提交新反馈
+      tags:
+      - user
   /users:
     get:
       consumes:
@@ -271,7 +339,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/handler.Resp'
-      summary: Get user info
+      summary: 获取用户信息
       tags:
       - user
     post:
@@ -306,7 +374,7 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/handler.Resp'
-      summary: Update user info
+      summary: 修改用户信息
       tags:
       - user
 schemes:

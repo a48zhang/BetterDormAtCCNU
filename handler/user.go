@@ -2,11 +2,12 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"main/model"
 	"main/service/userservice"
 )
 
 // GetUserInfo godoc
-// @Summary Get user info
+// @Summary 获取用户信息
 // @Description Get user info
 // @Tags user
 // @Accept json
@@ -26,7 +27,7 @@ func GetUserInfo(ctx *gin.Context) {
 }
 
 // UpdateUserInfo godoc
-// @Summary Update user info
+// @Summary 修改用户信息
 // @Description Update user info
 // @Tags user
 // @Accept json
@@ -39,8 +40,9 @@ func GetUserInfo(ctx *gin.Context) {
 // @Router /users [post]
 func UpdateUserInfo(ctx *gin.Context) {
 	uid := ctx.GetString("uid")
-	info, err := userservice.GetUserInfo(ctx.Request.Context(), uid)
-	err = ctx.BindJSON(&info)
+	info := model.User{CCNUid: uid}
+	info.FindByCCNUid(ctx)
+	err := ctx.BindJSON(&info)
 	err = userservice.UpdateUserInfo(ctx.Request.Context(), info)
 	if err != nil {
 		ResponseError(ctx, 500, err.Error())

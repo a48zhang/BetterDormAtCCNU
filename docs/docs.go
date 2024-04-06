@@ -282,6 +282,90 @@ const docTemplate = `{
                 }
             }
         },
+        "/report": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "我的反馈",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "提交新反馈",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "反馈信息",
+                        "name": "Report",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.ReportRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    }
+                }
+            }
+        },
         "/users": {
             "get": {
                 "description": "Get user info",
@@ -294,7 +378,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
-                "summary": "Get user info",
+                "summary": "获取用户信息",
                 "parameters": [
                     {
                         "type": "string",
@@ -330,7 +414,7 @@ const docTemplate = `{
                 "tags": [
                     "user"
                 ],
-                "summary": "Update user info",
+                "summary": "修改用户信息",
                 "parameters": [
                     {
                         "type": "string",
@@ -377,6 +461,9 @@ const docTemplate = `{
         "handler.CheckFormRequest": {
             "type": "object",
             "properties": {
+                "advice": {
+                    "type": "string"
+                },
                 "fid": {
                     "type": "string"
                 },
@@ -442,6 +529,17 @@ const docTemplate = `{
                 }
             }
         },
+        "handler.ReportRequest": {
+            "type": "object",
+            "properties": {
+                "contact": {
+                    "type": "string"
+                },
+                "info": {
+                    "type": "string"
+                }
+            }
+        },
         "handler.Resp": {
             "type": "object",
             "properties": {
@@ -472,6 +570,12 @@ const docTemplate = `{
                 "role": {
                     "description": "role: 0 for student, 1 for teacher, 2 for school",
                     "type": "integer"
+                },
+                "school": {
+                    "type": "string"
+                },
+                "stage": {
+                    "type": "string"
                 },
                 "uid": {
                     "type": "string"

@@ -14,6 +14,8 @@ type User struct {
 	Name   string             `json:"name" bson:"name"`
 	Passwd string             `json:"passwd" bson:"passwd"`
 	Role   int                `json:"role" bson:"role"` // role: 0 for student, 1 for teacher, 2 for school
+	School string             `json:"school" bson:"school"`
+	Stage  string             `json:"stage" bson:"stage"`
 	Valid  int                `json:"valid" bson:"valid"`
 }
 

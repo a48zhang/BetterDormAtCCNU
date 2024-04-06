@@ -98,8 +98,9 @@ func GetOneForm(ctx *gin.Context) {
 }
 
 type CheckFormRequest struct {
-	Fid string `json:"fid" bson:"fid"`
-	Opt int    `json:"opt" bson:"opt"`
+	Fid    string `json:"fid" bson:"fid"`
+	Opt    int    `json:"opt" bson:"opt"`
+	Advice string `json:"advice" bson:"advice"`
 }
 
 // CheckForm godoc
@@ -127,7 +128,7 @@ func CheckForm(ctx *gin.Context) {
 		ResponseError(ctx, 403, "Permission denied")
 		return
 	}
-	err = form.CheckForm(ctx.Request.Context(), info.Fid, info.Opt)
+	err = form.CheckForm(ctx.Request.Context(), info.Fid, info.Opt, info.Advice)
 	if err != nil {
 		ResponseError(ctx, 500, err.Error())
 		return

@@ -14,10 +14,6 @@ func GetUserInfo(ctx context.Context, uid string) (model.User, error) {
 func UpdateUserInfo(ctx context.Context, info model.User) error {
 	req := &model.User{}
 	*req = info
-	err := req.FindByCCNUid(ctx)
-	if err != nil {
-		return err
-	}
-	err = req.Update(ctx)
+	err := req.Update(ctx)
 	return err
 }

@@ -11,7 +11,7 @@ func CreateForm(ctx context.Context, data model.Form) error {
 }
 
 func GetUsersForm(ctx context.Context, uid string) ([]model.Form, error) {
-	forms, err := (&model.Form{StudentID: uid}).FindAll(ctx)
+	forms, err := (&model.Form{StudentID: uid}).FindByStudentId(ctx, uid)
 	if err != nil {
 		return nil, err
 	}
@@ -31,8 +31,8 @@ func GetOneForm(ctx context.Context, fid string) (model.Form, error) {
 // CheckForm
 // opt: 0 for waiting, 1 for teacher approve, -1 for teacher reject
 // 2 for school approve, -2 for school reject
-func CheckForm(ctx context.Context, fid string, opt int) error {
-	data := model.Form{Fid: fid, Status: opt}
+func CheckForm(ctx context.Context, fid string, opt int, advice string) error {
+	data := model.Form{Fid: fid, Status: opt, TeacherAdvice: advice}
 	err := data.Update(ctx)
 	return err
 }
