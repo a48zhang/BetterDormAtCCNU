@@ -12,16 +12,16 @@ type ReportRequest struct {
 
 // NewReport godoc
 //
-// @Summary 提交新反馈
-// @Tags user
-// @Accept	json
-// @Param token header string true "token"
-// @Produce json
-// @Param Report body ReportRequest true "反馈信息"
-// @Success	200	{object} Resp
-// @Failure	400	{object} Resp
-// @Failure	500	{object} Resp
-// @Router  /report [post]
+//	@Summary	提交新反馈
+//	@Tags		user
+//	@Accept		json
+//	@Param		token	header	string	true	"token"
+//	@Produce	json
+//	@Param		Report	body		ReportRequest	true	"反馈信息"
+//	@Success	200		{object}	Resp
+//	@Failure	400		{object}	Resp
+//	@Failure	500		{object}	Resp
+//	@Router		/report [post]
 func NewReport(ctx *gin.Context) {
 	uid := ctx.GetString("uid")
 	info := ReportRequest{}
@@ -40,13 +40,13 @@ func NewReport(ctx *gin.Context) {
 
 // MyReport godoc
 //
-// @Summary 我的反馈
-// @Tags user
-// @Param token header string true "token"
-// @Produce json
-// @Success	200	{object} Resp
-// @Failure	500	{object} Resp
-// @Router  /report [get]
+//	@Summary	我的反馈
+//	@Tags		user
+//	@Param		token	header	string	true	"token"
+//	@Produce	json
+//	@Success	200	{object}	Resp
+//	@Failure	500	{object}	Resp
+//	@Router		/report [get]
 func MyReport(ctx *gin.Context) {
 	uid := ctx.GetString("uid")
 	data, err := userservice.MyReport(ctx, uid)

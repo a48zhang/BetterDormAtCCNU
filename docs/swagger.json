@@ -58,8 +58,46 @@
                 }
             }
         },
+        "/forms/assigned": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "form"
+                ],
+                "summary": "获取分配给指定角色的换宿申请表格",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    }
+                }
+            }
+        },
         "/forms/check": {
             "post": {
+                "description": "opt: 0 for waiting, 1 for teacher approve, -1 for teacher reject, 2 for school approve, -2 for school reject\nif role \u003c abs(opt), permission denied",
                 "consumes": [
                     "application/json"
                 ],

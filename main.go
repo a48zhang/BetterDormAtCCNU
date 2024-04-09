@@ -10,7 +10,7 @@ import (
 
 //	@title			Dorm-changing Backend API
 //	@description	Backend system of Dorm-changing mini program, CCNU
-//	@version		0.1
+//	@version		0.2
 //	@contact.name	@a48zhang & @LogSingleDog
 //	@contact.email	3557695455@qq.com 1034028483@qq.com
 //	@schemes		http

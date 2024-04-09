@@ -21,15 +21,15 @@ type FormRequest struct {
 
 // CreateForm godoc
 //
-// @Summary 提交新换宿申请表格
-// @Tags form
-// @Accept	json
-// @Produce json
-// @Param token header string true "token"
-// @Param Form body FormRequest true "换宿申请表格"
-// @Success	200	{object} Resp
-// @Failure	400	{object} Resp
-// @Router  /forms/create [post]
+//	@Summary	提交新换宿申请表格
+//	@Tags		form
+//	@Accept		json
+//	@Produce	json
+//	@Param		token	header		string		true	"token"
+//	@Param		Form	body		FormRequest	true	"换宿申请表格"
+//	@Success	200		{object}	Resp
+//	@Failure	400		{object}	Resp
+//	@Router		/forms/create [post]
 func CreateForm(ctx *gin.Context) {
 	info := FormRequest{}
 	err := ctx.ShouldBindJSON(&info)
@@ -58,14 +58,14 @@ func CreateForm(ctx *gin.Context) {
 
 // GetForms godoc
 //
-// @Summary 获取用户的换宿申请表格
-// @Tags form
-// @Accept	json
-// @Produce json
-// @Param token header string true "token"
-// @Success	200	{object} Resp
-// @Failure	500	{object} Resp
-// @Router  /forms/my [get]
+//	@Summary	获取用户的换宿申请表格
+//	@Tags		form
+//	@Accept		json
+//	@Produce	json
+//	@Param		token	header		string	true	"token"
+//	@Success	200		{object}	Resp
+//	@Failure	500		{object}	Resp
+//	@Router		/forms/my [get]
 func GetForms(ctx *gin.Context) {
 	uid := ctx.GetString("uid")
 	forms, err := form.GetUsersForm(ctx.Request.Context(), uid)
@@ -78,15 +78,15 @@ func GetForms(ctx *gin.Context) {
 
 // GetOneForm godoc
 //
-// @Summary 获取单个换宿申请表格
-// @Tags form
-// @Accept	json
-// @Produce json
-// @Param token header string true "token"
-// @Param fid query string true "fid"
-// @Success	200	{object} Resp
-// @Failure	500	{object} Resp
-// @Router  /forms [get]
+//	@Summary	获取单个换宿申请表格
+//	@Tags		form
+//	@Accept		json
+//	@Produce	json
+//	@Param		token	header		string	true	"token"
+//	@Param		fid		query		string	true	"fid"
+//	@Success	200		{object}	Resp
+//	@Failure	500		{object}	Resp
+//	@Router		/forms [get]
 func GetOneForm(ctx *gin.Context) {
 	fid := ctx.Query("fid")
 	data, err := form.GetOneForm(ctx.Request.Context(), fid)
@@ -105,17 +105,19 @@ type CheckFormRequest struct {
 
 // CheckForm godoc
 //
-// @Summary 审核换宿申请表格
-// @Tags form
-// @Accept	json
-// @Produce json
-// @Param token header string true "token"
-// @Param CheckForm body CheckFormRequest true "审核信息"
-// @Success	200	{object} Resp
-// @Failure	400	{object} Resp
-// @Failure	403	{object} Resp
-// @Failure	500	{object} Resp
-// @Router  /forms/check [post]
+//	@Summary		审核换宿申请表格
+//	@Description	opt: 0 for waiting, 1 for teacher approve, -1 for teacher reject, 2 for school approve, -2 for school reject
+//	@Description	if role < abs(opt), permission denied
+//	@Tags			form
+//	@Accept			json
+//	@Produce		json
+//	@Param			token		header		string				true	"token"
+//	@Param			CheckForm	body		CheckFormRequest	true	"审核信息"
+//	@Success		200			{object}	Resp
+//	@Failure		400			{object}	Resp
+//	@Failure		403			{object}	Resp
+//	@Failure		500			{object}	Resp
+//	@Router			/forms/check [post]
 func CheckForm(ctx *gin.Context) {
 	role := ctx.GetInt("role")
 	info := CheckFormRequest{}
@@ -134,4 +136,25 @@ func CheckForm(ctx *gin.Context) {
 		return
 	}
 	ResponseOK(ctx, nil)
+}
+
+// GetAssignedForms godoc
+//
+//	@Summary	获取分配给指定角色的换宿申请表格
+//	@Tags		form
+//	@Accept		json
+//	@Produce	json
+//	@Param		token	header		string	true	"token"
+//	@Success	200		{object}	Resp
+//	@Failure	500		{object}	Resp
+//	@Router		/forms/assigned [get]
+func GetAssignedForms(ctx *gin.Context) {
+	role := ctx.GetInt("role")
+	uid := ctx.GetString("uid")
+	forms, err := form.GetAssignedForms(ctx.Request.Context(), uid, role)
+	if err != nil {
+		ResponseError(ctx, 500, err.Error())
+		return
+	}
+	ResponseOK(ctx, forms)
 }

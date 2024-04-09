@@ -38,10 +38,12 @@ func Register(e *gin.Engine) *gin.Engine {
 		forms.POST("/create", handler.CreateForm)
 		forms.GET("/", handler.GetOneForm)
 		forms.POST("/check", handler.CheckForm)
+		forms.GET("/assigned", handler.GetAssignedForms)
 
 		reports := v1.Group("/report")
 		reports.POST("/", handler.NewReport)
 		reports.GET("/", handler.MyReport)
+
 	}
 
 	return e

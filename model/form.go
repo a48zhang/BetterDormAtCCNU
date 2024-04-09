@@ -51,8 +51,8 @@ func (f *Form) FindAll(ctx context.Context) ([]any, error) {
 	return ret, nil
 }
 
-func (f *Form) FindByStudentId(ctx context.Context, sid string) ([]any, error) {
-	cursor, err := f.Col().Find(ctx, bson.M{"student_id": sid})
+func (f *Form) FindBy(ctx context.Context, filter interface{}) ([]any, error) {
+	cursor, err := f.Col().Find(ctx, filter)
 	if err != nil {
 		return nil, err
 	}
@@ -66,6 +66,18 @@ func (f *Form) FindByStudentId(ctx context.Context, sid string) ([]any, error) {
 		res[i] = v
 	}
 	return res, nil
+}
+
+func (f *Form) FindByStudentId(ctx context.Context, sid string) ([]any, error) {
+	return f.FindBy(ctx, bson.M{"student_id": sid})
+}
+
+func (f *Form) FindByTeacherId(ctx context.Context, tid string) ([]any, error) {
+	return f.FindBy(ctx, bson.M{"teacher_id": tid})
+}
+
+func (f *Form) FindForStuAffairOffice(ctx context.Context) ([]any, error) {
+	return f.FindBy(ctx, bson.M{"status": 1})
 }
 
 func (f *Form) Col() *mongo.Collection {
