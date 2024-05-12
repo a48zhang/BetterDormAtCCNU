@@ -1,3 +1,4 @@
 gin.log
 .idea
 config.yaml
+pdfgen/venv/
