@@ -11,8 +11,8 @@ const docTemplate = `{
         "description": "{{escape .Description}}",
         "title": "{{.Title}}",
         "contact": {
-            "name": "@a48zhang \u0026 @LogSingleDog",
-            "email": "3557695455@qq.com 1034028483@qq.com"
+            "name": "@a48zhang",
+            "email": "3557695455@qq.com"
         },
         "version": "{{.Version}}"
     },
@@ -229,6 +229,108 @@ const docTemplate = `{
                 "responses": {
                     "200": {
                         "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    }
+                }
+            }
+        },
+        "/forms/pdf": {
+            "get": {
+                "description": "Generate PDF for form by ID",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "tags": [
+                    "form"
+                ],
+                "summary": "根据表单ID生成表单PDF",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "form id",
+                        "name": "id",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/handler.Resp"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "description": "Generate PDF for form",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/pdf"
+                ],
+                "tags": [
+                    "form"
+                ],
+                "summary": "根据上传数据生成表单PDF",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    },
+                    {
+                        "description": "info",
+                        "name": "info",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/handler.PDFRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "file"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
                         "schema": {
                             "$ref": "#/definitions/handler.Resp"
                         }
@@ -469,13 +571,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/model.User"
                         }
-                    },
-                    {
-                        "type": "string",
-                        "description": "uid",
-                        "name": "uid",
-                        "in": "path",
-                        "required": true
                     }
                 ],
                 "responses": {
@@ -516,16 +611,37 @@ const docTemplate = `{
                 "college": {
                     "type": "string"
                 },
+                "community_advice": {
+                    "type": "string"
+                },
                 "contact": {
                     "type": "string"
                 },
                 "context": {
                     "type": "string"
                 },
+                "create_at": {
+                    "type": "string"
+                },
+                "from_bed": {
+                    "type": "string"
+                },
                 "from_dorm": {
                     "type": "string"
                 },
+                "hqzb_advice": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
+                },
                 "student_id": {
+                    "type": "string"
+                },
+                "teacher_advice": {
                     "type": "string"
                 },
                 "teacher_id": {
@@ -535,6 +651,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "to_dorm": {
+                    "type": "string"
+                },
+                "xgb_advice": {
                     "type": "string"
                 }
             }
@@ -549,6 +668,44 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "passwd": {
+                    "type": "string"
+                }
+            }
+        },
+        "handler.PDFRequest": {
+            "type": "object",
+            "properties": {
+                "contact": {
+                    "type": "string"
+                },
+                "from": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "school": {
+                    "type": "string"
+                },
+                "sid": {
+                    "type": "string"
+                },
+                "text0": {
+                    "type": "string"
+                },
+                "text1": {
+                    "type": "string"
+                },
+                "text2": {
+                    "type": "string"
+                },
+                "text3": {
+                    "type": "string"
+                },
+                "text4": {
+                    "type": "string"
+                },
+                "to": {
                     "type": "string"
                 }
             }
@@ -628,7 +785,7 @@ const docTemplate = `{
 
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
-	Version:          "0.1",
+	Version:          "0.3",
 	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{"http"},

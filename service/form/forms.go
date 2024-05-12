@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"main/model"
 )
 
@@ -25,8 +26,14 @@ func GetUsersForm(ctx context.Context, uid string) ([]model.Form, error) {
 }
 
 func GetOneForm(ctx context.Context, fid string) (model.Form, error) {
-	data := &model.Form{Fid: fid}
-	err := data.Find(ctx)
+	// convert fid to []byte
+	fidByte, err := primitive.ObjectIDFromHex(fid)
+	data := &model.Form{MID: fidByte}
+	res, err := data.FindBy(ctx, bson.M{"_id": fidByte})
+	if err != nil {
+		return model.Form{}, err
+	}
+	*data = res[0].(model.Form)
 	return *data, err
 }
 
@@ -34,8 +41,9 @@ func GetOneForm(ctx context.Context, fid string) (model.Form, error) {
 // opt: 0 for waiting, 1 for teacher approve, -1 for teacher reject
 // 2 for school approve, -2 for school reject
 func CheckForm(ctx context.Context, fid string, opt int, advice string) error {
-	data := model.Form{Fid: fid, Status: opt, TeacherAdvice: advice}
-	err := data.Update(ctx)
+	fidByte, err := primitive.ObjectIDFromHex(fid)
+	data := model.Form{MID: fidByte, Status: opt, TeacherAdvice: advice}
+	err = data.Update(ctx)
 	return err
 }
 

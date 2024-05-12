@@ -10,9 +10,9 @@ import (
 
 //	@title			Dorm-changing Backend API
 //	@description	Backend system of Dorm-changing mini program, CCNU
-//	@version		0.2
-//	@contact.name	@a48zhang & @LogSingleDog
-//	@contact.email	3557695455@qq.com 1034028483@qq.com
+//	@version		0.3
+//	@contact.name	@a48zhang
+//	@contact.email	3557695455@qq.com
 //	@schemes		http
 //	@BasePath		/api/v1
 
@@ -20,6 +20,6 @@ func main() {
 	gin.SetMode(conf.GetConf("BD_MODE"))
 
 	service.Ping()
-	err := router.Register(gin.Default()).Run(":8080")
+	err := router.Register(gin.Default()).Run(conf.GetConf("BD_PORT"))
 	logger.FatalLog("Exit. Reason: " + err.Error())
 }

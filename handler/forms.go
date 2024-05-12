@@ -2,6 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"main/model"
 	"main/service/form"
 	"math"
@@ -9,14 +10,22 @@ import (
 )
 
 type FormRequest struct {
-	StudentID string `json:"student_id" bson:"student_id"`
-	College   string `json:"college" bson:"college"`
-	Contact   string `json:"contact" bson:"contact"`
-	TeacherID string `json:"teacher_id" bson:"teacher_id"`
-	FromDorm  string `json:"from_dorm" bson:"from_dorm"`
-	ToDorm    string `json:"to_dorm" bson:"to_dorm"`
-	ToBed     string `json:"to_bed" bson:"to_bed"`
-	Context   string `json:"context" bson:"context"`
+	MID             primitive.ObjectID `json:"id" bson:"_id,omitempty"`
+	StudentID       string             `json:"student_id" bson:"student_id"`
+	College         string             `json:"college" bson:"college"`
+	Contact         string             `json:"contact" bson:"contact"`
+	TeacherID       string             `json:"teacher_id" bson:"teacher_id"`
+	CreateAt        string             `json:"create_at" bson:"create_at"`
+	FromDorm        string             `json:"from_dorm" bson:"from_dorm"`
+	FromBed         string             `json:"from_bed" bson:"from_bed"`
+	ToDorm          string             `json:"to_dorm" bson:"to_dorm"`
+	ToBed           string             `json:"to_bed" bson:"to_bed"`
+	Context         string             `json:"context" bson:"context"`
+	TeacherAdvice   string             `json:"teacher_advice" bson:"teacher_advice"`
+	CommunityAdvice string             `json:"community_advice" bson:"community_advice"`
+	XGBAdvice       string             `json:"xgb_advice" bson:"xgb_advice"`
+	HQBZBAdvice     string             `json:"hqzb_advice" bson:"hqzb_advice"`
+	Status          int                `json:"status" bson:"status"`
 }
 
 // CreateForm godoc
@@ -44,6 +53,7 @@ func CreateForm(ctx *gin.Context) {
 		Contact:   info.Contact,
 		CreateAt:  time.Now().String(),
 		FromDorm:  info.FromDorm,
+		FromBed:   info.FromBed,
 		ToBed:     info.ToBed,
 		ToDorm:    info.ToDorm,
 		Context:   info.Context,

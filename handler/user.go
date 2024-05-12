@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"main/model"
+	"main/pkg"
 	"main/service/userservice"
 )
 
@@ -24,7 +25,8 @@ func GetUserInfo(ctx *gin.Context) {
 		ResponseError(ctx, 500, err.Error())
 		return
 	}
-	ResponseOK(ctx, info)
+	role, _ := pkg.Get5thBit(uid)
+	Response(ctx, 200, info, role)
 }
 
 // UpdateUserInfo godoc
@@ -36,12 +38,12 @@ func GetUserInfo(ctx *gin.Context) {
 //	@Produce		json
 //	@Param			token	header		string		true	"token"
 //	@Param			info	body		model.User	true	"info"
-//	@Param			uid		path		string		true	"uid"
 //	@Success		200		{object}	Resp
 //	@Failure		500		{object}	Resp
 //	@Router			/users [post]
 func UpdateUserInfo(ctx *gin.Context) {
 	uid := ctx.GetString("uid")
+
 	info := model.User{CCNUid: uid}
 	info.FindByCCNUid(ctx)
 	err := ctx.BindJSON(&info)

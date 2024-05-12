@@ -28,19 +28,27 @@ func Register(e *gin.Engine) *gin.Engine {
 	{
 		v1.POST("register", handler.Register)
 		v1.POST("/login", handler.Login)
+
+		internal := v1.Group("/internal")
+		internal.GET("/pdf", handler.GenPDFCallback)
+
 		v1.Use(middleware.TokenParser)
+
 		users := v1.Group("/users")
+		forms := v1.Group("/forms")
+		reports := v1.Group("/report")
+
 		users.GET("/", handler.GetUserInfo)
 		users.POST("/", handler.UpdateUserInfo)
 
-		forms := v1.Group("/forms")
 		forms.GET("/my", handler.GetForms)
 		forms.POST("/create", handler.CreateForm)
 		forms.GET("/", handler.GetOneForm)
 		forms.POST("/check", handler.CheckForm)
 		forms.GET("/assigned", handler.GetAssignedForms)
+		forms.POST("/pdf", handler.GenFormPDF)
+		forms.GET("/pdf", handler.GenFormByID)
 
-		reports := v1.Group("/report")
 		reports.POST("/", handler.NewReport)
 		reports.GET("/", handler.MyReport)
 
