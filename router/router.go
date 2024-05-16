@@ -39,7 +39,7 @@ func Register(e *gin.Engine) *gin.Engine {
 		reports := v1.Group("/report")
 
 		users.GET("/", handler.GetUserInfo)
-		users.POST("/", handler.UpdateUserInfo)
+		users.POST("/", handler.UpdateMyInfo)
 
 		forms.GET("/my", handler.GetForms)
 		forms.POST("/create", handler.CreateForm)

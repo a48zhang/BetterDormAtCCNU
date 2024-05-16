@@ -5,6 +5,7 @@ import (
 	"main/model"
 	"main/pkg"
 	"main/service/userservice"
+	"strconv"
 )
 
 // GetUserInfo godoc
@@ -29,10 +30,10 @@ func GetUserInfo(ctx *gin.Context) {
 	Response(ctx, 200, info, role)
 }
 
-// UpdateUserInfo godoc
+// UpdateMyInfo godoc
 //
 //	@Summary		修改用户信息
-//	@Description	Update user info
+//	@Description	Update user's info
 //	@Tags			user
 //	@Accept			json
 //	@Produce		json
@@ -41,7 +42,7 @@ func GetUserInfo(ctx *gin.Context) {
 //	@Success		200		{object}	Resp
 //	@Failure		500		{object}	Resp
 //	@Router			/users [post]
-func UpdateUserInfo(ctx *gin.Context) {
+func UpdateMyInfo(ctx *gin.Context) {
 	uid := ctx.GetString("uid")
 
 	info := model.User{CCNUid: uid}
@@ -53,4 +54,17 @@ func UpdateUserInfo(ctx *gin.Context) {
 		return
 	}
 	ResponseOK(ctx, info)
+}
+
+func UpdateUserInfo(ctx *gin.Context) {
+	_role := ctx.GetString("role")
+	role, err := strconv.Atoi(_role)
+	if err != nil {
+		ResponseError(ctx, 400, err.Error())
+		return
+	}
+	if role < 2 {
+		ResponseError(ctx, 403, "role not satisfied")
+		return
+	}
 }

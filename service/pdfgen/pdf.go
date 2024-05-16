@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"main/pkg/conf"
 	"net/http"
 	"os"
 	"strconv"
@@ -48,6 +49,10 @@ func GenPDFForForm(ctx context.Context, p PdfForm) (string, error) {
 	}
 
 	return p.ID, nil
+}
+
+func GetFilePath(id string) string {
+	return "./" + conf.GetConf("bd_pdfgen_path") + id + ".pdf"
 }
 
 var Waitlist = make(map[string]int)

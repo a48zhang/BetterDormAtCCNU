@@ -46,7 +46,7 @@ func GenFormPDF(ctx *gin.Context) {
 	if err != nil {
 		ResponseError(ctx, 500, err.Error())
 	}
-	ctx.File("./" + id + ".pdf")
+	ctx.File(pdfgen.GetFilePath(id))
 	pdfgen.Waitlist[id] = 5
 }
 
@@ -81,8 +81,8 @@ func GenFormByID(ctx *gin.Context) {
 		School:  getForm.College,
 		Sid:     getForm.StudentID,
 		Contact: getForm.Contact,
-		From:    getForm.FromDorm,
-		To:      getForm.ToDorm,
+		From:    getForm.FromDorm + " " + getForm.FromBed,
+		To:      getForm.ToDorm + " " + getForm.ToBed,
 		Text0:   getForm.Context,
 		Text1:   getForm.TeacherAdvice,
 		Text2:   getForm.CommunityAdvice,
@@ -94,7 +94,7 @@ func GenFormByID(ctx *gin.Context) {
 	if err != nil {
 		ResponseError(ctx, 500, err.Error())
 	}
-	ctx.File("./" + id + ".pdf")
+	ctx.File(pdfgen.GetFilePath(id))
 	pdfgen.Waitlist[id] = 5
 }
 
