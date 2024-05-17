@@ -347,6 +347,52 @@ paths:
       summary: 根据上传数据生成表单PDF
       tags:
       - form
+  /internal/token/:
+    get:
+      description: Check token status
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: 查看token状态
+      tags:
+      - auth
+  /internal/token/refresh:
+    get:
+      description: Refresh token
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/handler.Resp'
+        "403":
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/handler.Resp'
+      summary: 刷新token
+      tags:
+      - auth
   /login:
     post:
       consumes:

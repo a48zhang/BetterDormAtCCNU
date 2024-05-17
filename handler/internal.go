@@ -17,6 +17,7 @@ import (
 //	@Param			token	header		string	true	"token"
 //	@Success		200		{object}	Resp
 //	@Failure		403		{object}	Resp
+//	@Router			/internal/token/ [get]
 func TokenStatus(ctx *gin.Context) {
 	tokenString := ctx.GetHeader("token")
 	parsetoken, claims, err := token.Parsetoken(tokenString)
@@ -47,6 +48,7 @@ func TokenStatus(ctx *gin.Context) {
 //	@Param			token	header		string	true	"token"
 //	@Success		200		{object}	Resp
 //	@Failure		403		{object}	Resp
+//	@Router			/internal/token/refresh [get]
 func TokenRefresh(ctx *gin.Context) {
 	MID, _ := ctx.Get("UserMID")
 	info := dao.User{MID: MID.(primitive.ObjectID)}
