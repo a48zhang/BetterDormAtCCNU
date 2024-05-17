@@ -1,4 +1,4 @@
-package model
+package dao
 
 import (
 	"context"
@@ -12,7 +12,7 @@ type Elem interface {
 	ID() primitive.ObjectID
 }
 
-type Crud interface {
+type DAO interface {
 	Insert(context.Context) error
 	Update(context.Context) error
 	Delete(context.Context) error
@@ -21,7 +21,7 @@ type Crud interface {
 }
 
 func find[T Elem](ctx context.Context, info *T) error {
-	return (*info).Col().FindOne(ctx, *info).Decode(&info)
+	return (*info).Col().FindOne(ctx, bson.D{{"_id", (*info).ID()}}).Decode(&info)
 }
 
 func findAll[T Elem](ctx context.Context, info *T) ([]T, error) {
@@ -42,7 +42,7 @@ func insert[T Elem](ctx context.Context, info *T) error {
 	return err
 }
 
-func delete[T Elem](ctx context.Context, info *T) error {
+func remove[T Elem](ctx context.Context, info *T) error {
 	_, err := (*info).Col().DeleteOne(ctx, *info)
 	return err
 }
@@ -59,7 +59,7 @@ func Update[T Elem](ctx context.Context, info *T) error {
 	return update(ctx, info)
 }
 func Delete[T Elem](ctx context.Context, info *T) error {
-	return delete(ctx, info)
+	return remove(ctx, info)
 }
 func Find[T Elem](ctx context.Context, info *T) error {
 	return find(ctx, info)

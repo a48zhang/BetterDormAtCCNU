@@ -45,18 +45,19 @@ func GetCaller(count ...int) DebugInfo {
 4: "Error",
 5: "Fatal",
 */
+var tpm = map[int]string{
+	0: "Log",
+	1: "Info",
+	2: "Debug",
+	3: "Warning",
+	4: "Error",
+	5: "Fatal",
+	6: "Panic",
+	7: "Undefined",
+	8: "Reversed",
+}
+
 func writeLog(s string, tp int, pc ...int) {
-	tpm := map[int]string{
-		0: "Log",
-		1: "Info",
-		2: "Debug",
-		3: "Warning",
-		4: "Error",
-		5: "Fatal",
-		6: "Panic",
-		7: "Undefined",
-		8: "Reversed",
-	}
 	if tpm[tp] == "" {
 		tp = 7
 	}

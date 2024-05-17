@@ -17,6 +17,11 @@ func Register(e *gin.Engine) *gin.Engine {
 		})
 	})
 
+	e.Use(middleware.RequestTracer)
+	// e.Use(middleware.Recovery)
+	e.Use(gin.Logger())
+	e.Use(gin.Recovery())
+	gin.Default()
 	e.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	e.GET("/ping", func(ctx *gin.Context) {
@@ -31,6 +36,11 @@ func Register(e *gin.Engine) *gin.Engine {
 
 		internal := v1.Group("/internal")
 		internal.GET("/pdf", handler.GenPDFCallback)
+		internal.GET("/sys", handler.ServiceStatus)
+
+		internal.Use(middleware.TokenParser)
+		internal.GET("/token/", handler.TokenStatus)
+		internal.GET("/token/refresh", handler.TokenRefresh)
 
 		v1.Use(middleware.TokenParser)
 

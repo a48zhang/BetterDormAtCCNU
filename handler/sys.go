@@ -2,12 +2,30 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"main/service"
+	"github.com/shirou/gopsutil/cpu"
+	"github.com/shirou/gopsutil/disk"
+	"github.com/shirou/gopsutil/mem"
+	"main/pkg/conf"
+	"main/router/middleware"
 )
-import "github.com/shirou/gopsutil/cpu"
 
 func ServiceStatus(ctx *gin.Context) {
-	res, _ := cpu.Info()
-	Response(ctx, 200, res, service.GetStatus())
+	if conf.GetConf("bd_mode") != "debug" {
+		ResponseError(ctx, 403, "forbidden")
+		return
+	}
+	cpuinfo, _ := cpu.Info()
+	memory, _ := mem.VirtualMemory()
+	usage, _ := disk.Usage("/")
+
+	ResponseOK(ctx, gin.H{
+		"cpu":    cpuinfo,
+		"memory": memory,
+		"disk":   usage,
+		"static": gin.H{
+			"from":  middleware.CountFrom,
+			"count": middleware.RequestCount,
+		},
+	})
 
 }

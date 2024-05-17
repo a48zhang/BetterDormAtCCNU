@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"main/model"
+	"main/dao"
 	"main/pkg"
 	"main/service/userservice"
 	"strconv"
@@ -38,14 +38,14 @@ func GetUserInfo(ctx *gin.Context) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			token	header		string		true	"token"
-//	@Param			info	body		model.User	true	"info"
+//	@Param			info	body		dao.User	true	"info"
 //	@Success		200		{object}	Resp
 //	@Failure		500		{object}	Resp
 //	@Router			/users [post]
 func UpdateMyInfo(ctx *gin.Context) {
 	uid := ctx.GetString("uid")
 
-	info := model.User{CCNUid: uid}
+	info := dao.User{CCNUid: uid}
 	info.FindByCCNUid(ctx)
 	err := ctx.BindJSON(&info)
 	err = userservice.UpdateUserInfo(ctx.Request.Context(), info)

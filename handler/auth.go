@@ -2,7 +2,7 @@ package handler
 
 import (
 	"github.com/gin-gonic/gin"
-	"main/model"
+	"main/dao"
 	"main/service/auth"
 )
 
@@ -26,10 +26,10 @@ func Login(ctx *gin.Context) {
 	req := LoginRequest{}
 	err := ctx.ShouldBindJSON(&req)
 	if err != nil {
-		ResponseError(ctx, 400, "Bad Request")
+		ResponseError(ctx, 400, err.Error())
 		return
 	}
-	token, err := auth.Login(ctx.Request.Context(), &model.User{Name: req.Name, Passwd: req.Passwd})
+	token, err := auth.Login(ctx.Request.Context(), &dao.User{Name: req.Name, Passwd: req.Passwd})
 	if err != nil {
 		ResponseError(ctx, 400, err.Error())
 		return
@@ -57,10 +57,10 @@ func Register(ctx *gin.Context) {
 	req := RegisterRequest{}
 	err := ctx.ShouldBindJSON(&req)
 	if err != nil {
-		ResponseError(ctx, 400, "Bad Request")
+		ResponseError(ctx, 400, err.Error())
 		return
 	}
-	err = auth.Register(ctx.Request.Context(), &model.User{CCNUid: req.CCNUid, Name: req.Name, Passwd: req.Passwd})
+	err = auth.Register(ctx.Request.Context(), &dao.User{CCNUid: req.CCNUid, Name: req.Name, Passwd: req.Passwd})
 	if err != nil {
 		ResponseError(ctx, 400, err.Error())
 		return

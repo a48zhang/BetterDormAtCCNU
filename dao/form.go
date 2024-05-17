@@ -1,4 +1,4 @@
-package model
+package dao
 
 import (
 	"context"
@@ -36,7 +36,7 @@ func (f *Form) Update(ctx context.Context) error {
 }
 
 func (f *Form) Delete(ctx context.Context) error {
-	return delete(ctx, &f)
+	return remove(ctx, &f)
 }
 
 func (f *Form) Find(ctx context.Context) error {

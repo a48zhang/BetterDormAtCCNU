@@ -2,9 +2,9 @@ package auth
 
 import (
 	"context"
-	"main/model"
+	"main/dao"
 )
 
-func Register(ctx context.Context, info *model.User) error {
+func Register(ctx context.Context, info *dao.User) error {
 	return info.Insert(ctx)
 }

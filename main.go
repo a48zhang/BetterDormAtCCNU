@@ -18,8 +18,7 @@ import (
 
 func main() {
 	gin.SetMode(conf.GetConf("BD_MODE"))
-
-	service.Ping()
-	err := router.Register(gin.Default()).Run(conf.GetConf("BD_PORT"))
+	logger.InfoLog(service.GetStatus().String())
+	err := router.Register(gin.New()).Run(conf.GetConf("BD_PORT"))
 	logger.FatalLog("Exit. Reason: " + err.Error())
 }

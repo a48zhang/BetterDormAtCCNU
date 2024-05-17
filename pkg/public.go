@@ -9,7 +9,7 @@ func Get5thBit(uid string) (string, int) {
 	if id <= 1000000000 || id >= 9999999999 {
 		role = "Are you a test user?"
 	} else {
-		b := (id / 1000000) % 10
+		b := (id / 100000) % 10
 		if b == 1 {
 			role = "Master"
 		} else if b == 2 {

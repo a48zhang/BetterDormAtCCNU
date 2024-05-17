@@ -1,5 +1,27 @@
 basePath: /api/v1
 definitions:
+  dao.User:
+    properties:
+      ccnuid:
+        type: string
+      id:
+        type: string
+      name:
+        type: string
+      passwd:
+        type: string
+      role:
+        description: 'role: 0 for student, 1 for teacher, 2 for school'
+        type: integer
+      school:
+        type: string
+      stage:
+        type: string
+      uid:
+        type: string
+      valid:
+        type: integer
+    type: object
   handler.CheckFormRequest:
     properties:
       advice:
@@ -99,30 +121,7 @@ definitions:
       code:
         type: integer
       data: {}
-      msg:
-        type: string
-    type: object
-  model.User:
-    properties:
-      ccnuid:
-        type: string
-      id:
-        type: string
-      name:
-        type: string
-      passwd:
-        type: string
-      role:
-        description: 'role: 0 for student, 1 for teacher, 2 for school'
-        type: integer
-      school:
-        type: string
-      stage:
-        type: string
-      uid:
-        type: string
-      valid:
-        type: integer
+      msg: {}
     type: object
 info:
   contact:
@@ -481,7 +480,7 @@ paths:
     post:
       consumes:
       - application/json
-      description: Update user info
+      description: Update user's info
       parameters:
       - description: token
         in: header
@@ -493,7 +492,7 @@ paths:
         name: info
         required: true
         schema:
-          $ref: '#/definitions/model.User'
+          $ref: '#/definitions/dao.User'
       produces:
       - application/json
       responses:

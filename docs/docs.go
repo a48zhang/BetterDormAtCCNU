@@ -544,7 +544,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Update user info",
+                "description": "Update user's info",
                 "consumes": [
                     "application/json"
                 ],
@@ -569,7 +569,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/model.User"
+                            "$ref": "#/definitions/dao.User"
                         }
                     }
                 ],
@@ -591,6 +591,39 @@ const docTemplate = `{
         }
     },
     "definitions": {
+        "dao.User": {
+            "type": "object",
+            "properties": {
+                "ccnuid": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "string"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "passwd": {
+                    "type": "string"
+                },
+                "role": {
+                    "description": "role: 0 for student, 1 for teacher, 2 for school",
+                    "type": "integer"
+                },
+                "school": {
+                    "type": "string"
+                },
+                "stage": {
+                    "type": "string"
+                },
+                "uid": {
+                    "type": "string"
+                },
+                "valid": {
+                    "type": "integer"
+                }
+            }
+        },
         "handler.CheckFormRequest": {
             "type": "object",
             "properties": {
@@ -742,42 +775,7 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "data": {},
-                "msg": {
-                    "type": "string"
-                }
-            }
-        },
-        "model.User": {
-            "type": "object",
-            "properties": {
-                "ccnuid": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "string"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "passwd": {
-                    "type": "string"
-                },
-                "role": {
-                    "description": "role: 0 for student, 1 for teacher, 2 for school",
-                    "type": "integer"
-                },
-                "school": {
-                    "type": "string"
-                },
-                "stage": {
-                    "type": "string"
-                },
-                "uid": {
-                    "type": "string"
-                },
-                "valid": {
-                    "type": "integer"
-                }
+                "msg": {}
             }
         }
     }

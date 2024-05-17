@@ -3,7 +3,8 @@ package middleware
 import (
 	"errors"
 	"github.com/gin-gonic/gin"
-	"main/model"
+	"log"
+	"main/dao"
 	"main/pkg/token"
 	"net/http"
 )
@@ -19,13 +20,18 @@ func TokenParser(r *gin.Context) {
 		r.AbortWithError(http.StatusForbidden, errors.New("token not valid"))
 		return
 	}
-	r.Set("uid", claims.UID)
+	r.Set("UserMID", claims.UserMID)
+	r.Set("IssuedAt", claims.IssuedAt)
 	r.Set("expiresAt", claims.ExpiresAt)
-	info := &model.User{CCNUid: claims.UID}
-	err = info.FindByCCNUid(r)
+	// Note: context[uid] = User.CCNUID
+	info := &dao.User{MID: claims.UserMID}
+	err = info.Find(r)
 	if err != nil {
+		log.Println(*claims, err)
 		r.AbortWithError(http.StatusForbidden, errors.New("user not valid"))
 	}
+	r.Set("uid", info.CCNUid)
+	r.Set("Username", info.Name)
 	r.Set("Role", info.Role)
 	r.Next()
 }

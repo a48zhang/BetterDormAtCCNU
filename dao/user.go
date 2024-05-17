@@ -1,4 +1,4 @@
-package model
+package dao
 
 import (
 	"context"
@@ -28,7 +28,7 @@ func (u *User) Update(ctx context.Context) error {
 }
 
 func (u *User) Delete(ctx context.Context) error {
-	return delete(ctx, &u)
+	return remove(ctx, &u)
 }
 
 func (u *User) Find(ctx context.Context) error {

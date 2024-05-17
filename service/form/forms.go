@@ -5,35 +5,35 @@ import (
 	"errors"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"main/model"
+	"main/dao"
 )
 
-func CreateForm(ctx context.Context, data model.Form) error {
+func CreateForm(ctx context.Context, data dao.Form) error {
 	err := data.Insert(ctx)
 	return err
 }
 
-func GetUsersForm(ctx context.Context, uid string) ([]model.Form, error) {
-	forms, err := (&model.Form{StudentID: uid}).FindByStudentId(ctx, uid)
+func GetUsersForm(ctx context.Context, uid string) ([]dao.Form, error) {
+	forms, err := (&dao.Form{StudentID: uid}).FindByStudentId(ctx, uid)
 	if err != nil {
 		return nil, err
 	}
-	ret := make([]model.Form, len(forms))
+	ret := make([]dao.Form, len(forms))
 	for i, v := range forms {
-		ret[i] = v.(model.Form)
+		ret[i] = v.(dao.Form)
 	}
 	return ret, err
 }
 
-func GetOneForm(ctx context.Context, fid string) (model.Form, error) {
+func GetOneForm(ctx context.Context, fid string) (dao.Form, error) {
 	// convert fid to []byte
 	fidByte, err := primitive.ObjectIDFromHex(fid)
-	data := &model.Form{MID: fidByte}
+	data := &dao.Form{MID: fidByte}
 	res, err := data.FindBy(ctx, bson.M{"_id": fidByte})
 	if err != nil {
-		return model.Form{}, err
+		return dao.Form{}, err
 	}
-	*data = res[0].(model.Form)
+	*data = res[0].(dao.Form)
 	return *data, err
 }
 
@@ -42,33 +42,33 @@ func GetOneForm(ctx context.Context, fid string) (model.Form, error) {
 // 2 for school approve, -2 for school reject
 func CheckForm(ctx context.Context, fid string, opt int, advice string) error {
 	fidByte, err := primitive.ObjectIDFromHex(fid)
-	data := model.Form{MID: fidByte, Status: opt, TeacherAdvice: advice}
+	data := dao.Form{MID: fidByte, Status: opt, TeacherAdvice: advice}
 	err = data.Update(ctx)
 	return err
 }
 
-func GetAssignedForms(ctx context.Context, uid string, role int) ([]model.Form, error) {
+func GetAssignedForms(ctx context.Context, uid string, role int) ([]dao.Form, error) {
 
 	switch role {
 	case 1:
-		forms, err := (&model.Form{TeacherID: uid}).FindByTeacherId(ctx, uid)
+		forms, err := (&dao.Form{TeacherID: uid}).FindByTeacherId(ctx, uid)
 		if err != nil {
 			return nil, err
 		}
-		ret := make([]model.Form, len(forms))
+		ret := make([]dao.Form, len(forms))
 		for i, v := range forms {
-			ret[i] = v.(model.Form)
+			ret[i] = v.(dao.Form)
 		}
 		return ret, err
 
 	case 2:
-		forms, err := (&model.Form{}).FindBy(ctx, bson.M{"status": 1})
+		forms, err := (&dao.Form{}).FindBy(ctx, bson.M{"status": 1})
 		if err != nil {
 			return nil, err
 		}
-		ret := make([]model.Form, len(forms))
+		ret := make([]dao.Form, len(forms))
 		for i, v := range forms {
-			ret[i] = v.(model.Form)
+			ret[i] = v.(dao.Form)
 		}
 		return ret, err
 	}

@@ -3,7 +3,7 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"main/model"
+	"main/dao"
 	"main/service/form"
 	"math"
 	"time"
@@ -46,7 +46,7 @@ func CreateForm(ctx *gin.Context) {
 		ResponseError(ctx, 400, err.Error())
 		return
 	}
-	err = form.CreateForm(ctx.Request.Context(), model.Form{
+	err = form.CreateForm(ctx.Request.Context(), dao.Form{
 		StudentID: info.StudentID,
 		College:   info.College,
 		TeacherID: info.TeacherID,
