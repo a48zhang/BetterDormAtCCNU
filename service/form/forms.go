@@ -48,30 +48,28 @@ func CheckForm(ctx context.Context, fid string, opt int, advice string) error {
 }
 
 func GetAssignedForms(ctx context.Context, uid string, role int) ([]dao.Form, error) {
-
-	switch role {
-	case 1:
-		forms, err := (&dao.Form{TeacherID: uid}).FindByTeacherId(ctx, uid)
-		if err != nil {
-			return nil, err
+	if role > 0 {
+		if role == 1 {
+			forms, err := (&dao.Form{TeacherID: uid}).FindByTeacherId(ctx, uid)
+			if err != nil {
+				return nil, err
+			}
+			ret := make([]dao.Form, len(forms))
+			for i, v := range forms {
+				ret[i] = v.(dao.Form)
+			}
+			return ret, err
+		} else {
+			forms, err := (&dao.Form{}).FindBy(ctx, bson.M{"status": 1})
+			if err != nil {
+				return nil, err
+			}
+			ret := make([]dao.Form, len(forms))
+			for i, v := range forms {
+				ret[i] = v.(dao.Form)
+			}
+			return ret, err
 		}
-		ret := make([]dao.Form, len(forms))
-		for i, v := range forms {
-			ret[i] = v.(dao.Form)
-		}
-		return ret, err
-
-	case 2:
-		forms, err := (&dao.Form{}).FindBy(ctx, bson.M{"status": 1})
-		if err != nil {
-			return nil, err
-		}
-		ret := make([]dao.Form, len(forms))
-		for i, v := range forms {
-			ret[i] = v.(dao.Form)
-		}
-		return ret, err
 	}
-
 	return nil, errors.New("role not satisfied")
 }

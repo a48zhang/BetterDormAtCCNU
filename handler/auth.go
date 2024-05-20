@@ -3,6 +3,7 @@ package handler
 import (
 	"github.com/gin-gonic/gin"
 	"main/dao"
+	"main/pkg/encrypt"
 	"main/service/auth"
 )
 
@@ -29,7 +30,7 @@ func Login(ctx *gin.Context) {
 		ResponseError(ctx, 400, err.Error())
 		return
 	}
-	token, err := auth.Login(ctx.Request.Context(), &dao.User{Name: req.Name, Passwd: req.Passwd})
+	token, err := auth.Login(ctx.Request.Context(), req.Name, req.Passwd)
 	if err != nil {
 		ResponseError(ctx, 400, err.Error())
 		return
@@ -60,7 +61,7 @@ func Register(ctx *gin.Context) {
 		ResponseError(ctx, 400, err.Error())
 		return
 	}
-	err = auth.Register(ctx.Request.Context(), &dao.User{CCNUid: req.CCNUid, Name: req.Name, Passwd: req.Passwd})
+	err = auth.Register(ctx.Request.Context(), &dao.User{CCNUid: req.CCNUid, Name: req.Name, Passwd: encrypt.PwdToHash(req.Passwd)})
 	if err != nil {
 		ResponseError(ctx, 400, err.Error())
 		return

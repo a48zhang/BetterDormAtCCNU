@@ -50,6 +50,8 @@ func Register(e *gin.Engine) *gin.Engine {
 
 		users.GET("/", handler.GetUserInfo)
 		users.POST("/", handler.UpdateMyInfo)
+		users.POST("/update", handler.UpdateUserInfo)
+		users.GET("/setrole", handler.SetUserRole)
 
 		forms.GET("/my", handler.GetForms)
 		forms.POST("/create", handler.CreateForm)

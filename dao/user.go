@@ -2,17 +2,37 @@ package dao
 
 import (
 	"context"
+	"crypto/md5"
+	"crypto/sha256"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"io"
 )
+
+type Password struct {
+	MD5Hash    string
+	SHA256Hash string
+	Salt       string
+}
+
+func (p *Password) Is(pwd string) bool {
+	pwd += p.Salt
+	h1 := sha256.New()
+	_, _ = io.WriteString(h1, pwd)
+	sha2h := h1.Sum(nil)
+	h2 := md5.New()
+	_, _ = io.WriteString(h2, pwd)
+	md5h := h2.Sum(nil)
+	return p.SHA256Hash == string(sha2h) && p.MD5Hash == string(md5h)
+}
 
 type User struct {
 	MID    primitive.ObjectID `json:"id" bson:"_id,omitempty"`
 	Uid    string             `json:"uid" bson:"uid"`
 	CCNUid string             `json:"ccnuid" bson:"ccnuid"`
 	Name   string             `json:"name" bson:"name"`
-	Passwd string             `json:"passwd" bson:"passwd"`
+	Passwd Password           `json:"passwd" bson:"passwd"`
 	Role   int                `json:"role" bson:"role"` // role: 0 for student, 1 for teacher, 2 for school
 	School string             `json:"school" bson:"school"`
 	Stage  string             `json:"stage" bson:"stage"`

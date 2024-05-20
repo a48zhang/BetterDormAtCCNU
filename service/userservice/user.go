@@ -8,6 +8,7 @@ import (
 func GetUserInfo(ctx context.Context, uid string) (dao.User, error) {
 	info := &dao.User{CCNUid: uid}
 	err := info.FindByCCNUid(ctx)
+	info.Passwd = dao.Password{}
 	return *info, err
 }
 
