@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"main/service/form"
 	"main/service/pdfgen"
@@ -100,7 +99,6 @@ func GenFormByID(ctx *gin.Context) {
 
 func GenPDFCallback(ctx *gin.Context) {
 	id := ctx.Query("id")
-	fmt.Println(id)
 	pdfgen.Waitlist[id] = 2
 	Response(ctx, 200, id, id)
 }

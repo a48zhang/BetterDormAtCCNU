@@ -22,7 +22,7 @@ func TokenParser(r *gin.Context) {
 	}
 	r.Set("UserMID", claims.UserMID)
 	r.Set("IssuedAt", claims.IssuedAt)
-	r.Set("expiresAt", claims.ExpiresAt)
+	r.Set("ExpiresAt", claims.ExpiresAt)
 	// Note: context[uid] = User.CCNUID
 	info := &dao.User{MID: claims.UserMID}
 	err = info.Find(r)
@@ -31,7 +31,7 @@ func TokenParser(r *gin.Context) {
 		r.AbortWithError(http.StatusForbidden, errors.New("user not valid"))
 	}
 	r.Set("uid", info.CCNUid)
-	r.Set("Username", info.Name)
-	r.Set("Role", info.Role)
+	r.Set("username", info.Name)
+	r.Set("role", info.Role)
 	r.Next()
 }
